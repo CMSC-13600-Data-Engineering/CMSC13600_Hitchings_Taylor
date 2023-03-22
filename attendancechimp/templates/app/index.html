@@ -4,10 +4,23 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+<style>
+p {
+ text-align:center
+}
+</style>
+
+<p>
+<font size="+4"> <b> Team </b> </font>
+Ashley Hitchings is a fourth-year studying Economics and Data Science at the University of Chicago. Originally from Palo Alto, CA, she enjoys long hikes, rivalrous board games, and investigative journalism.
+Noah Taylor...
+
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!
+  Hi <mark><b>{{ user.username }}</b></mark>!
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">Log In</a>
 {% endif %}
+
+<p>
 {% endblock %}
