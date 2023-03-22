@@ -4,16 +4,23 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+<head>
+<style>
+  p {text-align: center;}
+</style>
+</head>
 
-<font size="+4"> <b> Team </b> </font>
-Ashley Hitchings is a fourth-year studying Economics and Data Science at the University of Chicago. Originally from Palo Alto, CA, she enjoys long hikes, rivalrous board games, and investigative journalism.
-Noah Taylor...
+<p><font size="+2"> <b> Team </b> </font></p><br>
+<p>Ashley Hitchings is a fourth-year studying Economics and Data Science at the University of Chicago. Originally from Palo Alto, CA, she enjoys long hikes, rivalrous board games, and investigative journalism. </p><br>
+<p>Noah Taylor... </p><br>
+<br>
+<br>
 
 {% if user.is_authenticated %}
-  Hi <mark><b>{{ user.username }}</b></mark>!
+  <p>Hi <mark><b>{{ user.username }}</b></mark>!</p>
 {% else %}
   <p>You are not logged in</p>
-  <a href="{% url 'login' %}">Log In</a>
+  <p><a href="{% url 'login' %}">Log In</a></p>
 {% endif %}
 
 {% endblock %}
