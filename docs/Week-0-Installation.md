@@ -128,7 +128,7 @@ your application manages. Next, you will create a user account in Django
 ```
 (venv) $ python manage.py createsuperuser
 ```
-Follow the instructions in the termina. Finally, you can test to see if your Django installation worked by running the following command:
+Follow the instructions in the terminal. Finally, you can test to see if your Django installation worked by running the following command:
 ```
 (venv) $ python manage.py runserver
 ```
@@ -138,6 +138,15 @@ While keeping the command running, visit the URL [http://127.0.0.1:8000/app/] in
 Stop the `runserver` process above. You should install a sqlite3 client on your machine. This will help you debug assignments in this class by understanding what data has been stored in the database. Follow the instructions [https://www.sqlite.org/download.html] to get one and how to use it. Answer the following questions in this file.
 
 1. List all of the database tables currently in your database and what command you used to find them
+
+The tables in the db.sqlite3 database are:
+auth_group                  auth_user_user_permissions
+auth_group_permissions      django_admin_log          
+auth_permission             django_content_type       
+auth_user                   django_migrations         
+auth_user_groups            django_session            
+
+I used the command .open to open the database and the command .tables to display a list of all the table names in the database.   
 
 ## Step 7. Modifying The Front-End (TODO)
 While we understand that this class is not a web-application design course, it will be valuable for you to understand how the front-end of the application interfaces with the python code. You will modify `templates/app/index.html` to have the following:
