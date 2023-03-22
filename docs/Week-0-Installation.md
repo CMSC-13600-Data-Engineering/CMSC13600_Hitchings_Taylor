@@ -140,11 +140,16 @@ Stop the `runserver` process above. You should install a sqlite3 client on your 
 1. List all of the database tables currently in your database and what command you used to find them
 
 The tables in the db.sqlite3 database are:
-auth_group                  auth_user_user_permissions
-auth_group_permissions      django_admin_log          
-auth_permission             django_content_type       
-auth_user                   django_migrations         
-auth_user_groups            django_session            
+- auth_group                  
+- auth_group_permissions              
+- auth_permission                   
+- auth_user                           
+- auth_user_groups                     
+- auth_user_user_permissions
+- django_admin_log  
+- django_content_type 
+- django_migrations 
+- django_session   
 
 I used the command .open to open the database and the command .tables to display a list of all the table names in the database.   
 
