@@ -25,8 +25,8 @@
 
 <br>
 
-{% for today_date in dict %}
-<p> {{ today_date }} </p>
+{% if time_str in dict %}
+<p> {{ time_str }} </p>
 {% endfor %}
 
 
