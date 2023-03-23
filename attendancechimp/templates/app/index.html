@@ -10,8 +10,8 @@
 </style>
 </head>
 
-<p><font size="+2"> <b> Team </b> </font></p><br>
-<p>Ashley Hitchings is a fourth-year studying Economics and Data Science at the University of Chicago. Originally from Palo Alto, CA, she enjoys long hikes, rivalrous board games, and investigative journalism. </p><br>
+<p><font size="+1"> <b> Team Bios </b> </font></p><br>
+<p>Ashley Hitchings is a fourth-year studying Economics and Data Science at the University of Chicago. Originally from Palo Alto, CA, she enjoys long hikes, board games, and longform journalism. </p><br>
 <p>Noah Taylor is a fourth-year studying Biology and Data Science at the University of Chicago. Orginially from Chicago, IL, he enjoys chess, soccer, and sudoku. </p><br>
 <br>
 <br>
@@ -22,5 +22,12 @@
   <p>You are not logged in</p>
   <p><a href="{% url 'login' %}">Log In</a></p>
 {% endif %}
+
+<br>
+
+{% for date in dict %}
+<p> Today's date is {{ date }} </p>
+{% endfor %}
+
 
 {% endblock %}
