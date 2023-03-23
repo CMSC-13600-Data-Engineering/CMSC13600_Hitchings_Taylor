@@ -6,7 +6,9 @@ import calendar
 
 def index(request):
     now = datetime.now()
+    time = now.strftime("%H:%M:%S")
     month = now.strftime("%B")
     day = now.strftime("%d")
-    time_str = 'Today is the ' + day + 'th of ' + month
-    return render(request, 'app/index.html', {'dict':time_str})
+    login_date = 'Today is ' + month + day + '.' 
+    login_time = 'User logged in at ' + time_str + '.'
+    return render(request, 'app/index.html', {'date':login_date,'time':login_time})
