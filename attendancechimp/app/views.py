@@ -9,4 +9,4 @@ def index(request):
     month = now.strftime("%B")
     day = now.strftime("%d")
     time_str = 'Today is the ' + day + 'th of ' + month
-    return render(request, 'app/index.html', {'dict':time_str})
+    return render(request, 'app/index.html', {'dict':time_str,'red':'red'})
