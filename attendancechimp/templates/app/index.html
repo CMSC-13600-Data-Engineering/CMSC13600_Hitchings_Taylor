@@ -25,9 +25,11 @@
 
 <br>
 
-{% if time_str in dict %}
+{{dict}}
+
+{% for time_str in dict %}
 <p> {{ time_str }} </p>
-{% endif %}
+{% endfor %}
 
 
 {% endblock %}
