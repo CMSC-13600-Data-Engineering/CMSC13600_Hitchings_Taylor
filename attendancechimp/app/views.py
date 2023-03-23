@@ -9,6 +9,6 @@ def index(request):
     time = now.strftime("%H:%M:%S")
     month = now.strftime("%B")
     day = now.strftime("%d")
-    login_date = 'Today is ' + month + day + '.' 
+    login_date = 'Today is ' + month + " " + day + '.' 
     login_time = 'User logged in at ' + time + '.'
     return render(request, 'app/index.html', {'date':login_date,'time':login_time})
