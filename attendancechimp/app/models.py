@@ -15,7 +15,7 @@ class User(models.Model):
 class Courses(models.Model):
     courseid=models.CharField(max_length=9, primary_key=True)
     course_name=models.CharField(max_length=75,null=True,blank=True)
-    instructor=models.ForeignKey(User,on_delete=models.CASCADE)
+    instructorid=models.ForeignKey(User,on_delete=models.CASCADE)
 #Must ensure in some way that students cannot accidentally be instructors
     
 #Track what students are enrolled in what classes
