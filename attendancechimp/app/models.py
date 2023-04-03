@@ -9,12 +9,10 @@ from django.contrib.auth.models import User
 #Create a table of all users (students and instructors)
 
 class User_Profiles(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile", primary_key=True)
     first_name=models.CharField(max_length=50,null=True,blank=True)
     last_name=models.CharField(max_length=50,null=True,blank=True)
-    email=models.CharField(max_length=50, null=True, blank=True)
-    #Is a user a student or instructor
-    #When populating the table, need to ensure
+    email=models.CharField(max_length=50, null=True, blank=True, unique=True, error_messages={'unique':"This email has already been registered."})
     user_type = models.CharField(max_length=20,null=True,blank=True)
  
 #create a table of all courses
