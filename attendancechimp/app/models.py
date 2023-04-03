@@ -1,15 +1,21 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth.models import User
+
+
 # Create your models here.
 
 #Create a table of all users (students and instructors)
 
-class User(models.Model):
-    userid=models.IntegerField(primary_key=True, max_length=8)
-    first_name=models.CharField(max_length=20,null=True,blank=True)
-    last_name=models.CharField(max_length=20, null=True, blank=True)
+class User_Profiles(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name=models.CharField(max_length=50,null=True,blank=True)
+    last_name=models.CharField(max_length=50,null=True,blank=True)
+    email=models.CharField(max_length=50, null=True, blank=True)
     #Is a user a student or instructor
     #When populating the table, need to ensure
-    user_class=models.CharField(max_length=20)
+    user_type = models.CharField(max_length=20,null=True,blank=True)
  
 #create a table of all courses
 class Courses(models.Model):
@@ -45,3 +51,10 @@ class Uploaded_QRCodes(models.Model):
     classmeeting=models.ForeignKey(Instructor_QRCodes,on_delete=models.CASCADE)
     upload_qr=models.ImageField(upload_to='uploaded_qr_codes')
     upload_time=models.DateTimeField()
+
+@receiver(post_save, sender=User)
+def update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        User_Profiles.objects.create(user=instance)
+    instance.profile.save()
+
