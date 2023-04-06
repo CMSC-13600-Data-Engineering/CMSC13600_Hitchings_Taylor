@@ -55,4 +55,32 @@ def update_user_profile(sender, instance, created, **kwargs):
     if created:
         User_Profiles.objects.create(user=instance)
     instance.profile.save()
+#import logging
+def addCourse(courseid,course_name,instructorid):
+    if len(courseid) != 9:
+        raise ValueError('Course id is incorrect length, course id must be 9 characters')
+    
+    if len(course_name) >75:
+        raise ValueError('Course name is incorrect length)
 
+    if len(course_name) == 0:
+        raise ValueError('Course name is incorrect length')
+
+    if len(instuctorid) == 0:
+        raise ValueError('Course name is incorrect length')
+    
+    if Courses.objects.filter(courseid=courseid).count() > 0:
+        raise ValueError('Another course with courseid ' + courseid + ' exists')
+    
+    if Courses.objects.filter(course_name=course_name).count() > 0:
+        raise ValueError('Another course by the same name already exists')
+        
+    new_course = Courses(courseid=courseid, course_name=course_name, instructorid=instructorid)
+    new_course.save()
+    
+    
+    
+    
+    courseid=models.CharField(max_length=9, primary_key=True)
+    course_name=models.CharField(max_length=75,null=True,blank=True)
+    instructorid=models.ForeignKey(User,on_delete=models.CASCADE)
