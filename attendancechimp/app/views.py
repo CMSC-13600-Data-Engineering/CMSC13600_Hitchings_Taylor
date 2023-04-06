@@ -11,6 +11,8 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from app.forms import SignUpForm
 
+import json
+
 def new(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -29,3 +31,36 @@ def new(request):
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
+
+def addCourseForm(request, error_msg=''):
+    '''addCourseForm serves a web form that we can use to add a course to the database
+    '''
+
+    return render(request, 'addcourse.html', {'error': error_msg})
+
+def handlecourseForm(request):
+    if request.method != "POST":
+        return HttpResponse("Error: the request is not an HTTP POST request\n", status=500)
+    try:
+        body_unicode = request.body.decode('utf-8')
+
+        #print('Message Body: ' + body_unicode)
+
+        body = json.loads(body_unicode)
+
+        #print('Message Body Parsed: ' + str(body))
+        
+        courseid = body['courseid']
+        course_name = body['course_name']
+        instructorid = body['instructorid'] 
+    except:
+
+        return HttpResponse("Error: HTTP POST did not contain the appropriate parameters\n", status=500)
+
+
+    try:
+        addCourse(courseid, course_name, instructorid)
+    except Exception as e:
+        return HttpResponse("Error: There is a database error in creating this course: " + str(e) + '\n', status=500)
+
+    return HttpResponse(status=200)
