@@ -42,20 +42,12 @@ def handlecourseForm(request):
     if request.method != "POST":
         return HttpResponse("Error: the request is not an HTTP POST request\n", status=500)
     try:
-        body_unicode = request.body.decode('utf-8')
-
-        #print('Message Body: ' + body_unicode)
-
-        body = json.loads(body_unicode)
-
-        #print('Message Body Parsed: ' + str(body))
-        
-        courseid = body['courseid']
-        course_name = body['course_name']
-        instructorid = body['instructorid'] 
+        courseid = request.POST['courseid']
+        course_name = request.POST['course_name']
+        instructorid = request.POST['instructorid']
     except:
 
-        return HttpResponse("Error: HTTP POST did not contain the appropriate parameters\n", status=500)
+        return addBookForm(request, error_msg='Please fill out all the fields of the form')
 
 
     try:
