@@ -13,6 +13,8 @@ from app.forms import SignUpForm
 
 import json
 
+from app.models import *
+
 def new(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
