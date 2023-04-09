@@ -61,7 +61,7 @@ def addCourse(courseid,course_name,instructorid):
         raise ValueError('Course id is incorrect length, course id must be 9 characters')
     
     if len(course_name) >75:
-        raise ValueError('Course name is incorrect length)
+        raise ValueError('Course name is incorrect length')
 
     if len(course_name) == 0:
         raise ValueError('Course name is incorrect length')
