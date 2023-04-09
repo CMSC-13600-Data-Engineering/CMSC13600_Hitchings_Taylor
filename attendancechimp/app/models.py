@@ -66,7 +66,7 @@ def addCourse(courseid,course_name,instructorid):
     if len(course_name) == 0:
         raise ValueError('Course name is incorrect length')
 
-    if len(instuctorid) == 0:
+    if len(instructorid) == 0:
         raise ValueError('Course name is incorrect length')
     
     if Courses.objects.filter(courseid=courseid).count() > 0:
