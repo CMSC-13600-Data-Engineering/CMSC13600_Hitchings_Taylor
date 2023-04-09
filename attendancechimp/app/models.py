@@ -81,6 +81,6 @@ def addCourse(courseid,course_name,instructorid):
     
     
     
-    courseid=models.CharField(max_length=9, primary_key=True)
-    course_name=models.CharField(max_length=75,null=True,blank=True)
-    instructorid=models.ForeignKey(User,on_delete=models.CASCADE)
+    #courseid=models.CharField(max_length=9, primary_key=True)
+    #course_name=models.CharField(max_length=75,null=True,blank=True)
+    #instructorid=models.ForeignKey(User,on_delete=models.CASCADE)
