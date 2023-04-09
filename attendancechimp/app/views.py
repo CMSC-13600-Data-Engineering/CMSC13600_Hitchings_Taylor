@@ -55,4 +55,4 @@ def handlecourseForm(request):
     except Exception as e:
         return HttpResponse("Error: There is a database error in creating this course: " + str(e) + '\n', status=500)
 
-    return HttpResponse(status=200)
+    return addCourseForm(request)
