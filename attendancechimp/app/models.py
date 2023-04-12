@@ -19,8 +19,9 @@ class User_Profiles(models.Model):
 class Courses(models.Model):
     courseid=models.CharField(max_length=9, primary_key=True)
     course_name=models.CharField(max_length=75,null=True,blank=True)
-    instructorid=models.ForeignKey(User,on_delete=models.CASCADE)
-#Must ensure in some way that students cannot accidentally be instructors
+    instructorid=models.ForeignKey(User_Profiles,on_delete=models.CASCADE)
+    recurrence=models.CharField(max_length=5,null=True,blank=True)
+    time=models.CharField(max_length=5,null=True,blank=True)
     
 #Track what students are enrolled in what classes
 #This does allow a 'double enrollment' into a class
@@ -28,7 +29,7 @@ class Courses(models.Model):
 class Enrollment(models.Model):
     enrollmentid=models.AutoField(primary_key=True)
     enrolledclass=models.ForeignKey(Courses, on_delete=models.CASCADE)
-    studentid=models.ForeignKey(User,on_delete=models.CASCADE)
+    studentid=models.ForeignKey(User_Profiles,on_delete=models.CASCADE)
 
 class Instructor_QRCodes(models.Model):
     qrid=models.AutoField(primary_key=True)
@@ -56,7 +57,7 @@ def update_user_profile(sender, instance, created, **kwargs):
         User_Profiles.objects.create(user=instance)
     instance.profile.save()
 #import logging
-def addCourse(courseid,course_name,instructorid):
+def addCourse(courseid,course_name,instructorid,recurrence,time):
     if len(courseid) != 9:
         raise ValueError('Course id is incorrect length, course id must be 9 characters')
     
@@ -73,11 +74,23 @@ def addCourse(courseid,course_name,instructorid):
         raise ValueError('Another course with courseid ' + courseid + ' exists')
     
     if Courses.objects.filter(course_name=course_name).count() > 0:
-        raise ValueError('Another course by the same name already exists')
-        
-    new_course = Courses(courseid=courseid, course_name=course_name, instructorid=instructorid)
-    new_course.save()
+        raise ValueError('Another course with the same name already exists')
     
+    if len(recurrence) > 5:
+        raise ValueError('Recurrence of the course is too long, please use 1 letter codes for each weekday the course meets on (M=monday, R=Thursday, etc.). Do not separate letters by spaces or commas')
+
+    days=[M,T,W,R,F]
+    for i in recurrence:
+        if i not in days:
+            raise ValueError('Unrecognized character in class recurrence, use the provided 1-letter codes for each day the class occurs and do not separate letters')
+    if len(time) != 5:
+        raise ValueError('Incorrect length for class start time, plase add time in the form 00:00 (24-hour time)')
+    
+    #This doesn't quite work because it doesn't account for 2 classes conflicting only on certian days of the week (or typos I guess)
+    if Courses.objects.filter(time=time,instructorid=instructorid,recurrence=recurrence).count > 0:
+        raise ValueError('Another class is taught by the same instructor at the same time')
+    new_course = Courses(courseid=courseid, course_name=course_name, instructorid=instructorid, recurrence=recurrence, time=time)
+    new_course.save()
     
     
     
