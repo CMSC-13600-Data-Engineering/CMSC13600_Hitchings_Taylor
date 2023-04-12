@@ -21,7 +21,7 @@ class Courses(models.Model):
     course_name=models.CharField(max_length=75,null=True,blank=True)
     instructorid=models.ForeignKey(User_Profiles,on_delete=models.CASCADE)
     recurrence=models.CharField(max_length=5,null=True,blank=True)
-    time=models.CharField(max_length=5,null=True,blank=True)
+    classtime=models.CharField(max_length=5,null=True,blank=True)
     
 #Track what students are enrolled in what classes
 #This does allow a 'double enrollment' into a class
@@ -57,7 +57,7 @@ def update_user_profile(sender, instance, created, **kwargs):
         User_Profiles.objects.create(user=instance)
     instance.profile.save()
 #import logging
-def addCourse(courseid,course_name,instructorid,recurrence,time):
+def addCourse(courseid,course_name,instructorid,recurrence,classtime):
     if len(courseid) != 9:
         raise ValueError('Course id is incorrect length, course id must be 9 characters')
     
@@ -83,13 +83,13 @@ def addCourse(courseid,course_name,instructorid,recurrence,time):
     for i in recurrence:
         if i not in days:
             raise ValueError('Unrecognized character in class recurrence, use the provided 1-letter codes for each day the class occurs and do not separate letters')
-    if len(time) != 5:
+    if len(classtime) != 5:
         raise ValueError('Incorrect length for class start time, plase add time in the form 00:00 (24-hour time)')
     
     #This doesn't quite work because it doesn't account for 2 classes conflicting only on certian days of the week (or typos I guess)
-    if Courses.objects.filter(time=time,instructorid=instructorid,recurrence=recurrence).count > 0:
+    if Courses.objects.filter(classtime=classtime,instructorid=instructorid,recurrence=recurrence).count > 0:
         raise ValueError('Another class is taught by the same instructor at the same time')
-    new_course = Courses(courseid=courseid, course_name=course_name, instructorid=instructorid, recurrence=recurrence, time=time)
+    new_course = Courses(courseid=courseid, course_name=course_name, instructorid=instructorid, recurrence=recurrence, classtime=classtime)
     new_course.save()
     
     
