@@ -79,7 +79,7 @@ def addCourse(courseid,course_name,instructorid,recurrence,classtime):
     if len(recurrence) > 5:
         raise ValueError('Recurrence of the course is too long, please use 1 letter codes for each weekday the course meets on (M=monday, R=Thursday, etc.). Do not separate letters by spaces or commas')
 
-    days=[M,T,W,R,F]
+    days=['M','T','W','R','F']
     for i in recurrence:
         if i not in days:
             raise ValueError('Unrecognized character in class recurrence, use the provided 1-letter codes for each day the class occurs and do not separate letters')
