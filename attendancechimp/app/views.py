@@ -51,7 +51,7 @@ def handlecourseForm(request):
         classtime = request.POST['classtime']
     except:
 
-        return addBookForm(request, error_msg='Please fill out all the fields of the form')
+        return addCourseForm(request, error_msg='Please fill out all the fields of the form')
 
 
     try:
