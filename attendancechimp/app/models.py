@@ -87,7 +87,7 @@ def addCourse(courseid,course_name,instructorid,recurrence,classtime):
         raise ValueError('Incorrect length for class start time, plase add time in the form 00:00 (24-hour time)')
     
     #This doesn't quite work because it doesn't account for 2 classes conflicting only on certian days of the week (or typos I guess)
-    if Courses.objects.filter(classtime=classtime,instructorid=instructorid,recurrence=recurrence).count > 0:
+    if Courses.objects.filter(classtime=classtime,instructorid=instructorid,recurrence=recurrence).count() > 0:
         raise ValueError('Another class is taught by the same instructor at the same time')
     new_course = Courses(courseid=courseid, course_name=course_name, instructorid=instructorid, recurrence=recurrence, classtime=classtime)
     new_course.save()
