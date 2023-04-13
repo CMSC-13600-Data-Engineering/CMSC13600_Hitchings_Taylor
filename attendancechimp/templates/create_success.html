@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<h1>Success</h1>
+	<p>Your course has been created successfully!</p>
+
+	<h3>Course URLs</h3>
+	<ul>
+		<li><a href="{{ join_url }}">Join Course</a></li>
+		<li><a href="{{ attendance_url }}">Track Attendance</a></li>
+		<li><a href="{{ upload_url }}">Upload QR Codes</a></li>
+	</ul>
+{% endblock %}
+
