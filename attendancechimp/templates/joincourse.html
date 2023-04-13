@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ course.course_name }}</h1>
+<p>{{ course.courseid }}</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Join</button>
+    <input type="hidden" name="courseid" value="{{ course.courseid }}">
+</form>
+{% endblock %}

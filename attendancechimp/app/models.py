@@ -22,13 +22,23 @@ class Courses(models.Model):
     instructorid=models.ForeignKey(User_Profiles,on_delete=models.CASCADE)
     recurrence=models.CharField(max_length=5,null=True,blank=True)
     classtime=models.CharField(max_length=5,null=True,blank=True)
+
+    # generate urls
+    def get_join_url(self):
+        return f'/app/join?courseid={self.courseid}'
+
+    def get_attendance_url(self):
+        return f'/app/attendance?courseid={self.courseid}'
+
+    def get_upload_url(self):
+        return f'/app/upload?courseid={self.courseid}'
     
 #Track what students are enrolled in what classes
 #This does allow a 'double enrollment' into a class
 #So code actuall populating the table needs to prevent that
 class Enrollment(models.Model):
     enrollmentid=models.AutoField(primary_key=True)
-    enrolledclass=models.ForeignKey(Courses, on_delete=models.CASCADE)
+    courseid=models.ForeignKey(Courses, on_delete=models.CASCADE)
     studentid=models.ForeignKey(User_Profiles,on_delete=models.CASCADE)
 
 class Instructor_QRCodes(models.Model):
@@ -91,6 +101,7 @@ def addCourse(courseid,course_name,instructorid,recurrence,classtime):
         raise ValueError('Another class is taught by the same instructor at the same time')
     new_course = Courses(courseid=courseid, course_name=course_name, instructorid=User_Profiles.objects.get(user=instructorid), recurrence=recurrence, classtime=classtime)
     new_course.save()
+
     
     
     
