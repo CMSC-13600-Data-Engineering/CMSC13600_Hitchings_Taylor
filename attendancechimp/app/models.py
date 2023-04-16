@@ -130,7 +130,7 @@ def addCourse(courseid,course_name,instructorid,recurrence,classtime,startdate,e
     if enddate_final == startdate_final:
         raise ValueError('End date and start date are the same day')
     
-    new_course = Courses(courseid=courseid, course_name=course_name, instructorid=User_Profiles.objects.get(user=instructorid), recurrence=recurrence, classtime=classtime,startdate=statdate_final,enddate=enddate_final)
+    new_course = Courses(courseid=courseid, course_name=course_name, instructorid=User_Profiles.objects.get(user=instructorid), recurrence=recurrence, classtime=classtime,startdate=startdate_final,enddate=enddate_final)
     new_course.save()
 
     #courseid=models.CharField(max_length=9, primary_key=True)
