@@ -1,6 +1,6 @@
 <form method="post" action="handleaddCourse">
   {% csrf_token %}
-  {{error}}
+  {{error}}<br>
   <label for="courseid">Course ID:</label><br>
   <input type="text" id="courseid" name="courseid"><br>
   <label for="course_name">Course Name:</label><br>
@@ -14,6 +14,7 @@
   <p>For class time, please input all times in the form HH:MM, please use 24-hour time</p><br>
   <label for="classtime">Class Time:</label><br>
   <input type="text" id="classtime" name="classtime"><br>
+  <p>For start and end date please input dates in the form yyyy-mm-dd</p><br>
   <label for="startdate">Start Date:</label><br>
   <input type="text" id="startdate" name="startdate"><br>
   <label for="enddate">End Date:</label><br>
