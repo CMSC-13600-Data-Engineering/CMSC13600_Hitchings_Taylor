@@ -23,8 +23,8 @@ class Courses(models.Model):
     instructorid=models.ForeignKey(User_Profiles,on_delete=models.CASCADE)
     recurrence=models.CharField(max_length=5,null=True,blank=True)
     classtime=models.CharField(max_length=5,null=True,blank=True)
-    startdate=models.DateField(blank=True)
-    enddate=models.DateField(blank=True)
+    startdate=models.DateField(null=True, blank=True)
+    enddate=models.DateField(null=True, blank=True)
 
     # generate urls
     def get_join_url(self):
