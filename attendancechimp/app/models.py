@@ -117,9 +117,10 @@ def addCourse(courseid,course_name,instructorid,recurrence,classtime,startdate,e
     if len(enddate) != 10:
         raise ValueError('Incorrect end date length, please input date in the format yyyy-mm-dd')
     
-    
-    startdate_final=datetime.datetime.strptime(startdate, '%Y%m%d').date()
-    enddate_final=datetime.datetime.strptime(enddate, '%Y%m%d').date()
+    startdate_1 = startdate.replace('-','')
+    enddate_1 = enddate.replace('-','')
+    startdate_final=datetime.datetime.strptime(startdate_1, '%Y%m%d').date()
+    enddate_final=datetime.datetime.strptime(enddate_1, '%Y%m%d').date()
                                            
     if enddate_final < startdate_final:
         raise ValueError('End date is before start date')
