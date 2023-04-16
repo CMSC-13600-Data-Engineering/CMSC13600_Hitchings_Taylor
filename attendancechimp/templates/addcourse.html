@@ -1,19 +1,23 @@
 <form method="post" action="handleaddCourse">
   {% csrf_token %}
 
-  <label for="courseid">course id:</label><br>
+  <label for="courseid">Course ID:</label><br>
   <input type="text" id="courseid" name="courseid"><br>
-  <label for="course_name">course_name:</label><br>
+  <label for="course_name">Course Name:</label><br>
   <input type="text" id="course_name" name="course_name"><br>
-  <label for="instructorid">instructorid:</label><br>
+  <label for="instructorid">Instructor ID:</label><br>
   <input type="number" id="instructorid" name="instructorid"><br>
   <p>For class recurrence, please input the days of the week the class occurs on, using the following 1-letter codes for each day:</p><br>
   <p>Monday: M, Tuesday: T, Wednesday: W, Thursday: R, Friday: F</p><br>
-  <label for="recurrence">recurrence:</label><br>
+  <label for="recurrence">Class Recurrence:</label><br>
   <input type="text" id="recurrence" name="recurrence"><br>
   <p>For class time, please input all times in the form HH:MM, please use 24-hour time</p><br>
-  <label for="classtime">classtime:</label><br>
+  <label for="classtime">Class Time:</label><br>
   <input type="text" id="classtime" name="classtime"><br>
+  <label for="startdate">Start Date:</label><br>
+  <input type="text" id="startdate" name="startdate"<br>
+  <label for="enddate">End Date:</label><br>
+  <input type="text" id="enddate" name="enddate"<br>
   <input type="submit" value="Submit">
 </form>
   
