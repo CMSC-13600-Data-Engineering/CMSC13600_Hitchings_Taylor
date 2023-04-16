@@ -50,6 +50,8 @@ def handlecourseForm(request):
         instructorid = request.POST['instructorid']
         recurrence = request.POST['recurrence']
         classtime = request.POST['classtime']
+        startdate=request.POST['startdate']
+        enddate=request.POST['enddate']
     except:
         return addCourseForm(request, error_msg='Please fill out all the fields of the form')
 
