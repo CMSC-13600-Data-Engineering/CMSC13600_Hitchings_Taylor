@@ -102,16 +102,26 @@ def addCourse(courseid,course_name,instructorid,recurrence,classtime,startdate,e
     #This doesn't quite work because it doesn't account for 2 classes conflicting only on certian days of the week (or typos I guess)
     if Courses.objects.filter(classtime=classtime,instructorid=instructorid,recurrence=recurrence).count() > 0:
         raise ValueError('Another class is taught by the same instructor at the same time')
+    legalchars=['0','1','2','3','4','5','6','7','8','9','/',',']
+    for i in startdate:
+        if i not in legalchars:
+            raise ValueError('Invalid character in start date, please input date in the format ddmmyyyy, dd/mm/yyyy, or dd,mm,yyyy')
+    
+    for i in enddate:
+        if i not in legalchars:
+            raise ValueError('Invalid character in end date, please input date in the format ddmmyyyy, dd/mm/yyyy, or dd,mm,yyyy')
+            
     startdate_input_1=startdate.replace('/','')
-    startdate_input_2=startdate_input_1.replace('\','')
-    startdate_input=startdate_input_2.replace(',','')                                      
+    startdate_input=startdate_input_1.replace(',','')                                      
     if len(startdate_input) != 8:
         raise ValueError('Incorrect start date length, please input date in the format ddmmyyyy, dd/mm/yyyy, or dd,mm,yyyy')
+    
     enddate_input_1=enddate.replace('/','')
-    enddate_input_2=enddate_input_1.replace('\','')
-    enddate_input=enddate_input_2.replace(',','')                                      
+    enddate_input=enddate_input_1.replace(',','')                                      
     if len(enddate_input) != 8:
         raise ValueError('Incorrect end date length, please input date in the format ddmmyyyy, dd/mm/yyyy, or dd,mm,yyyy')
+    
+    
     startdate_final=datetime.datetime.strptime(startdate_input, '%d%m%Y').date()
     enddate_final=datetime.datetime.strptime(enddate_input, '%d%m%Y').date()
                                            
@@ -119,6 +129,7 @@ def addCourse(courseid,course_name,instructorid,recurrence,classtime,startdate,e
         raise ValueError('End date is before start date')
     if enddate_final == startdate_final:
         raise ValueError('End date and start date are the same day')
+    
     new_course = Courses(courseid=courseid, course_name=course_name, instructorid=User_Profiles.objects.get(user=instructorid), recurrence=recurrence, classtime=classtime,startdate=statdate_final,enddate=enddate_final)
     new_course.save()
 
