@@ -71,9 +71,7 @@ def update_user_profile(sender, instance, created, **kwargs):
     instance.profile.save()
 #import logging
 def addCourse(courseid,course_name,instructorid,recurrence,classtime,startdate,enddate):
-    allarguments = locals()
-    if len(allarguments.values()) != 7:
-        raise ValueError('Please fill all fields')
+    
     if len(courseid) != 9:
         raise ValueError('Course id is incorrect length, course id must be 9 characters')
     
@@ -114,6 +112,8 @@ def addCourse(courseid,course_name,instructorid,recurrence,classtime,startdate,e
         if i not in legalchars:
             raise ValueError('Invalid character in end date, please input date in the format yyyy-mm-dd')
                                                
+    if len(recurrence) == 0:
+        raise ValueError('Please fill in class recurrence field')
     if len(startdate) != 10:
         raise ValueError('Incorrect start date length, please input date in the format yyyy-mm-dd')
                                          
