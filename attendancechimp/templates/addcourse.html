@@ -1,6 +1,6 @@
 <form method="post" action="handleaddCourse">
   {% csrf_token %}
-
+  {{error}}
   <label for="courseid">Course ID:</label><br>
   <input type="text" id="courseid" name="courseid"><br>
   <label for="course_name">Course Name:</label><br>
@@ -20,5 +20,3 @@
   <input type="text" id="enddate" name="enddate"><br>
   <input type="submit" value="Submit">
 </form>
-  
-  {{error}}
