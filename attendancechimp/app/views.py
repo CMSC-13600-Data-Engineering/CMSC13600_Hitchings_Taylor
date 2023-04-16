@@ -56,7 +56,7 @@ def handlecourseForm(request):
         return addCourseForm(request, error_msg='Please fill out all the fields of the form')
 
     try:
-        addCourse(courseid, course_name, instructorid, recurrence, classtime)
+        addCourse(courseid, course_name, instructorid, recurrence, classtime, startdate, enddate)
     except Exception as e:
         return HttpResponse("Error: There is a database error in creating this course: " + str(e) + '\n', status=500)
 
