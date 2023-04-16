@@ -58,7 +58,7 @@ def handlecourseForm(request):
     try:
         addCourse(courseid, course_name, instructorid, recurrence, classtime, startdate, enddate)
     except Exception as e:
-        return addCourseForm(request,error_msg="Error: There is a database error in creating this course: " + str(e) + '\n', status=500)
+        return addCourseForm(request,error_msg="Error: There is a database error in creating this course: " + str(e) + '\n')
 
     return redirect(reverse('create_success', args=[courseid]))
 
