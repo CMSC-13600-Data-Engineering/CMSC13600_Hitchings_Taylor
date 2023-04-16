@@ -42,6 +42,8 @@ def addCourseForm(request, error_msg=''):
 def handlecourseForm(request):
     if request.method != "POST":
         return HttpResponse("Error: the request is not an HTTP POST request\n", status=500)
+    if request.user.profile.user_type != '1':
+        return HttpResponse("Error: You are not logged in as an instructor.")
     try:
         courseid = request.POST['courseid']
         course_name = request.POST['course_name']
