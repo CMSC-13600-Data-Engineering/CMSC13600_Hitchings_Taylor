@@ -72,7 +72,7 @@ def update_user_profile(sender, instance, created, **kwargs):
 #import logging
 def addCourse(courseid,course_name,instructorid,recurrence,classtime,startdate,enddate):
     allarguments = locals()
-    if len(allarguments.keys()) =! 7
+    if len(allarguments.keys()) =! 7:
         raise ValueError('Please fill all fields')
     if len(courseid) != 9:
         raise ValueError('Course id is incorrect length, course id must be 9 characters')
