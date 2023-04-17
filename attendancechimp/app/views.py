@@ -119,11 +119,31 @@ def attendance(request):
     # ...
     course_id = request.GET.get('course_id')
     return render(request, 'attendance.html', {'course_id': course_id})
-
+'''
 @login_required(login_url='/login/')
 def upload_qr_code(request):
     # code to handle the student uploading the QR code image
-    # ...
-    course_id = request.GET.get('course_id')
-    return render(request, 'upload_qr_code.html', {'course_id': course_id})
-'''
+    if request.user.profile.user_type != '0':
+        return HttpResponse("Error: You are not logged in as a student.")
+    if request.method != "POST":
+        return HttpResponse("Error: the request is not an HTTP POST request\n", status=500) 
+    
+    course_get = request.GET.get('courseid')
+    courseid = Courses.objects.get(courseid=course_get)
+    
+    studentid_get = request.user.id
+    studentid = User_Profiles.objects.get(user_id=studentid_get)
+    
+    enrolled=Enrollment.objects.filter(studentid=studentid, courseid=courseid).first()
+    
+    if enrolled is none:
+        return HttpResponse("Error: You are not enrolled in this course.")
+    
+    idget=request.GET.get('enrollmentid')
+    id1=Enrollment.objects.get(enrollmentid=idget)
+    upload_qr=request.FILES
+    
+    newqrcode=Uploaded_QRCodes(enrollmentid=id1,upload_qr=upload_qr)
+    newqrcode.save()  
+    return HttpResponse("Success! Image Uploaded")
+    #return render(request, 'upload_qr_code.html', {'course_id': course_id})
