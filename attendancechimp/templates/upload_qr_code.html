@@ -1,6 +1,18 @@
-<form method="post" action="upload_qr_code">
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ course.course_name }}</h1>
+<p>{{ course.courseid }}</p>
+<p>{{enrollment.enrollmentid}}</p>
+<form method="post">
   {% csrf_token %}
   
   <input type="file" id="upload_qr" name="upload_qr">
   <button type="submit">Upload</button>
+  <input type="hidden" name="courseid" value="{{ course.courseid }}">
+</form>
+{% endblock %}
+
+<form method="post" action="upload_qr_code">
+
 </form>
