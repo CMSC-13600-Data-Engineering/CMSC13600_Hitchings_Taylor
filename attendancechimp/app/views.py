@@ -125,8 +125,8 @@ def upload_qr_code(request):
     # code to handle the student uploading the QR code image
     if request.user.profile.user_type != '0':
         return HttpResponse("Error: You are not logged in as a student.")
-    if request.method != "POST":
-        return HttpResponse("Error: the request is not an HTTP POST request\n", status=500) 
+    #if request.method != "POST":
+    #    return HttpResponse("Error: the request is not an HTTP POST request\n", status=500) 
     
     course_get = request.GET.get('courseid')
     courseid = Courses.objects.get(courseid=course_get)
@@ -144,6 +144,8 @@ def upload_qr_code(request):
     upload_qr=request.FILES
     
     newqrcode=Uploaded_QRCodes(enrollmentid=id1,upload_qr=upload_qr)
-    newqrcode.save()  
+    newqrcode.save()
+    
+    
     return HttpResponse("Success! Image Uploaded")
     #return render(request, 'upload_qr_code.html', {'course_id': course_id})
