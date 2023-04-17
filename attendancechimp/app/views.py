@@ -120,6 +120,8 @@ def attendance(request):
     course_id = request.GET.get('course_id')
     return render(request, 'attendance.html', {'course_id': course_id})
 '''
+
+import logging
 @login_required(login_url='/login/')
 def upload_qr_code(request):
     # code to handle the student uploading the QR code image
@@ -127,7 +129,7 @@ def upload_qr_code(request):
         return HttpResponse("Error: You are not logged in as a student.")
     #if request.method != "POST":
     #    return HttpResponse("Error: the request is not an HTTP POST request\n", status=500) 
-    
+    logging.info('Trying to get course ')
     course_get = request.GET.get('courseid')
     courseid = Courses.objects.get(courseid=course_get)
     
