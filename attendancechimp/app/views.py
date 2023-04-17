@@ -136,9 +136,9 @@ def upload_qr_code(request):
     studentid_get = request.user.id
     studentid = User_Profiles.objects.get(user_id=studentid_get)
     
-    enrolled=Enrollment.objects.filter(studentid=studentid, courseid=courseid).first()
+    enrolled=Enrollment.objects.filter(studentid=studentid, courseid=courseid).count()
     
-    if enrolled is None:
+    if enrolled == 0:
         return HttpResponse("Error: You are not enrolled in this course.")
     
     idget=request.GET.get('enrollmentid')
