@@ -10,5 +10,5 @@ urlpatterns = [
     # from 3 QR codes
     path('join/', views.joincourse, name='joincourse'),
    # path('attendance/', views.attendance, name='attendance'),
-   # path('upload/', views.upload_qr_code, name='upload_qr_code'),
+   path('upload/', views.upload_qr_code, name='upload_qr_code'),
 ]
