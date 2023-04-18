@@ -91,7 +91,7 @@ def joincourse(request):
 
         # Check if student is already enrolled in this course
         if current_enrollment is not None:
-            return render(request, 'app/join.html', {'error_message': 'You are already enrolled in this course.'})
+            return render(request, 'joincourse.html', {'error_message': 'You are already enrolled in this course.'})
         # Check if student is enrolled in any other courses with the same classtime
         current_courses = Enrollment.objects.filter(studentid=studentid)
         #courseidy=getattr(courseid)
@@ -141,8 +141,9 @@ def upload_qr_code(request):
     if Enrollment.objects.filter(studentid=studentid, courseid=courseid).count() == 0:
         return HttpResponse("Error: You are not enrolled in this course.")
     
-    idget=request.GET.get('enrollmentid')
-    id1=Enrollment.objects.get(enrollmentid=idget)
+    #idget=request.GET.get('enrollmentid')
+    #id1=Enrollment.objects.get(enrollmentid=idget)
+    id1=Enrollment.objects.filter(studentid=studentid,courseid=courseid).enrollmentid
     upload_qr=request.FILES
     
     newqrcode=Uploaded_QRCodes(enrollmentid=id1,upload_qr=upload_qr)
