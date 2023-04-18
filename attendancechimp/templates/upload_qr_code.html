@@ -3,13 +3,14 @@
 {% block content %}
 <h1>{{ course.course_name }}</h1>
 <p>{{ course.courseid }}</p>
-<p>{{enrollment.enrollmentid}}</p>
+<p>{{Enrollment.enrollmentid}}</p>
 <form method="post">
   {% csrf_token %}
   
   <input type="file" id="upload_qr" name="upload_qr">
   <button type="submit">Upload</button>
   <input type="hidden" name="courseid" value="{{ course.courseid }}">
+  <input type="hidden" name="enrollmentid" value="{{ Enrollment.enrollmentid }}">
 </form>
 {% endblock %}
 
