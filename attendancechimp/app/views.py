@@ -99,7 +99,7 @@ def joincourse(request):
         for enrollment in current_courses:
             if enrollment.courseid.classtime == Courses.objects.get(courseid=courseidy).classtime:
                 messages.error(request, 'You are already enrolled in a course that meets at this time.')
-                return render(request, 'app/join.html', {'courseid':courseid})
+                return render(request, 'app/joincourse.html', {'courseid':courseid})
 
         # Enroll student in course
         enrollment = Enrollment(courseid=courseid, studentid=studentid)
