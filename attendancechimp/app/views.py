@@ -95,7 +95,7 @@ def joincourse(request):
         # Check if student is enrolled in any other courses with the same classtime
         current_courses = Enrollment.objects.filter(studentid=studentid)
         #courseidy=getattr(courseid)
-        courseidy=courseid.Value()
+        courseidy=courseid.courseid
         for enrollment in current_courses:
             if enrollment.courseid.classtime == Courses.objects.get(courseid=courseidy).classtime:
                 messages.error(request, 'You are already enrolled in a course that meets at this time.')
