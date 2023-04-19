@@ -136,22 +136,15 @@ def upload_qr_code(request):
     course_get = request.GET.get('courseid')
     courseid = Courses.objects.get(courseid=course_get).courseid
     course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)[0]
+    studentid_get = request.user.id
+    studentid = User_Profiles.objects.get(user_id=studentid_get)
     enrollmentid=Enrollment.objects.values_list('enrollmentid',flat=True).filter(studentid=studentid,courseid=courseid)[0]
     
     if request.method == "POST": 
-    
-        
-    
-        studentid_get = request.user.id
-        studentid = User_Profiles.objects.get(user_id=studentid_get)
-    
-        
-        
+
         if Enrollment.objects.filter(studentid=studentid, courseid=courseid).count() == 0:
             return HttpResponse("Error: You are not enrolled in this course.")
-    
-    
-        
+
         upload_qr=request.FILES
     
         newqrcode=Uploaded_QRCodes(enrollmentid=enrollmentid,upload_qr=upload_qr)
