@@ -1,10 +1,7 @@
-{% extends 'base.html' %}
-
-{% block content %}
 <h1>{{ course.course_name }}</h1>
 <p>{{ course.courseid }}</p>
 <p>{{Enrollment.enrollmentid}}</p>
-<form method="post">
+<form method="post" action="upload_qr_code">
   {% csrf_token %}
   
   <input type="file" id="upload_qr" name="upload_qr">
@@ -13,7 +10,3 @@
   <input type="hidden" name="enrollmentid" value="{{ Enrollment.enrollmentid }}">
 </form>
 {% endblock %}
-
-<form method="post" action="upload_qr_code">
-
-</form>
