@@ -102,7 +102,7 @@ def joincourse(request):
                 return render(request, 'joincourse.html', {'courseid':courseid,'course_name':course_name,'error':'You are already enrolled in a course that meets at this time'})
 
         # Enroll student in course
-        instructorid=User_Profiles.objects.get(user=instructorid)
+        
         enrollment = Enrollment(courseid=Courses.objects.get(courseid=course_get), studentid=studentid)
         enrollment.save()
         return HttpResponse('You have successfully enrolled!')
