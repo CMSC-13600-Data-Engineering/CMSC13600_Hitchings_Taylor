@@ -78,12 +78,16 @@ def joincourse(request):
     # check if user prifile is student
     if request.user.profile.user_type != '0':
         return HttpResponse("Error: You are not logged in as a student.")
-
-    course_get = request.GET.get('courseid')
-    courseid = Courses.objects.get(courseid=course_get).courseid
-    course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)[0]
-    
+    if request.method == 'GET':
+        course_get = request.GET.get('courseid')
+        courseid = Courses.objects.get(courseid=course_get).courseid
+        course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)[0]
+        return render(request, 'joincourse.html', {'courseid':courseid,'course_name':course_name})
     if request.method == 'POST':
+        course_get = request.POST.get('courseid')
+        courseid = Courses.objects.get(courseid=course_get).courseid
+        course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)[0]
+        
         studentid_get = request.user.id
         studentid = User_Profiles.objects.get(user_id=studentid_get)
 
@@ -107,10 +111,7 @@ def joincourse(request):
         enrollment.save()
         return HttpResponse('You have successfully enrolled!')
 
-    else:
-        #courseid = request.GET.get('courseid')
-        #course_name=request.GET.get('course_name').course_name
-        return render(request, 'joincourse.html', {'courseid':courseid,'course_name':course_name})
+    
 
     
 
