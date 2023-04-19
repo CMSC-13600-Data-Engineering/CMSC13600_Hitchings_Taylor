@@ -91,7 +91,7 @@ def joincourse(request):
 
         # Check if student is already enrolled in this course
         if current_enrollment is not None:
-            return render(request, 'joincourse.html', {'error_message': 'You are already enrolled in this course.'})
+            return render(request, 'joincourse.html', {'error': 'You are already enrolled in this course.'})
         # Check if student is enrolled in any other courses with the same classtime
         current_courses = Enrollment.objects.filter(studentid=studentid)
         #courseidy=getattr(courseid)
@@ -99,7 +99,7 @@ def joincourse(request):
         for enrollment in current_courses:
             if enrollment.courseid.classtime == Courses.objects.get(courseid=courseidy).classtime:
                 messages.error(request, 'You are already enrolled in a course that meets at this time.')
-                return render(request, 'joincourse.html', {'courseid':courseidy})
+                return render(request, 'joincourse.html', {'courseid':courseidy,'error':'You are alreadyt enrolled in a course that meets at this time'})
 
         # Enroll student in course
         enrollment = Enrollment(courseid=courseid, studentid=studentid)
