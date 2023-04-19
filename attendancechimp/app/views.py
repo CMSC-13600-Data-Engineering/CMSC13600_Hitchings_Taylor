@@ -154,8 +154,8 @@ def upload_qr_code(request):
         
         upload_qr = request.FILES['upload_qr']
         fss = FileSystemStorage()
-        file = fss.save(upload_qr.name, upload_qr)
-        file_url = fss.url(file)
+        #file = fss.save(upload_qr.name, upload_qr)
+        #file_url = fss.url(file)
         #upload_qr=request.POST['upload_qr']
         enrollmentid=Enrollment.objects.values_list('enrollmentid',flat=True).filter(studentid=studentid,courseid=courseid)[0]
         
