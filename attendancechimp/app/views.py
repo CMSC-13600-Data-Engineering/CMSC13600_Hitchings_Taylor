@@ -128,8 +128,8 @@ def upload_qr_code(request):
     # code to handle the student uploading the QR code image
     if request.user.profile.user_type != '0':
         return HttpResponse("Error: You are not logged in as a student.")
-    #if request.method != "POST":
-    #    return HttpResponse("Error: the request is not an HTTP POST request\n", status=500) 
+    if request.method != "POST":
+        return HttpResponse("Error: the request is not an HTTP POST request\n", status=500) 
     logging.info('Trying to get course ')
     course_get = request.GET.get('courseid')
     courseid = Courses.objects.get(courseid=course_get)
