@@ -81,7 +81,7 @@ def joincourse(request):
 
     course_get = request.GET.get('courseid')
     courseid = Courses.objects.get(courseid=course_get).courseid
-    course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)
+    course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)[0]['course_name']
     
     if request.method == 'POST':
         studentid_get = request.user.id
