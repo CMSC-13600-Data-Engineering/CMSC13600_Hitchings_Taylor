@@ -96,10 +96,10 @@ def joincourse(request):
         current_courses = Enrollment.objects.filter(studentid=studentid)
         
         #courseidy=courseid.courseid
-        for enrollment in Enrollment.objects.filter(studentid=studentid, courseid=courseid).first():
+        for enrollment in Enrollment.objects.filter(studentid=studentid, courseid=courseid):
             if enrollment.courseid.classtime == Courses.objects.get(courseid=courseid).classtime:
-                messages.error(request, 'You are already enrolled in a course that meets at this time.')
-                return render(request, 'joincourse.html', {'courseid':courseid,'course_name':course_name,'error':'You are alreadyt enrolled in a course that meets at this time'})
+                #messages.error(request, 'You are already enrolled in a course that meets at this time.')
+                return render(request, 'joincourse.html', {'courseid':courseid,'course_name':course_name,'error':'You are already enrolled in a course that meets at this time'})
 
         # Enroll student in course
         enrollment = Enrollment(courseid=courseid, studentid=studentid)
