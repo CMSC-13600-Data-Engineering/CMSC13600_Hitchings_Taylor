@@ -123,7 +123,11 @@ def attendance(request):
     return render(request, 'attendance.html', {'course_id': course_id})
 '''
 
-import logging
+
+
+
+
+
 @login_required(login_url='/login/')
 def upload_qr_code(request):
     # code to handle the student uploading the QR code image
@@ -149,7 +153,13 @@ def upload_qr_code(request):
         newqrcode.save()
     
     
-        return HttpResponse("Success! Image Uploaded")
+        #return HttpResponse("Success! Image Uploaded")
+        return redirect(reverse('upload_success'))
     else:
         
         return render(request, 'upload_qr_code.html')
+    
+    def upload_success(request):
+    # code to display the success page for uploaded qr code
+    
+        return render(request, 'upload_success.html')
