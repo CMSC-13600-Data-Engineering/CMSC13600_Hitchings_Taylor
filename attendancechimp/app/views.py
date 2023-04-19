@@ -128,27 +128,25 @@ def upload_qr_code(request):
     # code to handle the student uploading the QR code image
     if request.user.profile.user_type != '0':
         return HttpResponse("Error: You are not logged in as a student.")
-    if request.method != "POST":
-        return HttpResponse("Error: the request is not an HTTP POST request\n", status=500) 
-    logging.info('Trying to get course ')
-    course_get = request.POST.get('courseid')
-    courseid = Courses.objects.get(courseid=course_get)
+    if request.method == "POST": 
     
-    studentid_get = request.user.id
-    studentid = User_Profiles.objects.get(user_id=studentid_get)
+        course_get = request.GET.get('courseid')
+        courseid = Courses.objects.get(courseid=course_get)
     
-    
-    if Enrollment.objects.filter(studentid=studentid, courseid=courseid).count() == 0:
-        return HttpResponse("Error: You are not enrolled in this course.")
-    
-    #idget=request.GET.get('enrollmentid')
-    #id1=Enrollment.objects.get(enrollmentid=idget)
-    id1=Enrollment.objects.values_list('enrollmentid',flat=True).filter(studentid=studentid,courseid=courseid)[0]
-    upload_qr=request.FILES
-    
-    newqrcode=Uploaded_QRCodes(enrollmentid=id1,upload_qr=upload_qr)
-    newqrcode.save()
+        studentid_get = request.user.id
+        studentid = User_Profiles.objects.get(user_id=studentid_get)
     
     
-    return HttpResponse("Success! Image Uploaded")
+        if Enrollment.objects.filter(studentid=studentid, courseid=courseid).count() == 0:
+            return HttpResponse("Error: You are not enrolled in this course.")
+    
+    
+        id1=Enrollment.objects.values_list('enrollmentid',flat=True).filter(studentid=studentid,courseid=courseid)[0]
+        upload_qr=request.FILES
+    
+        newqrcode=Uploaded_QRCodes(enrollmentid=id1,upload_qr=upload_qr)
+        newqrcode.save()
+    
+    
+        return HttpResponse("Success! Image Uploaded")
     #return render(request, 'upload_qr_code.html', {'course_id': course_id})
