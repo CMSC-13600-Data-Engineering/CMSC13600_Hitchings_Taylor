@@ -131,7 +131,7 @@ def upload_qr_code(request):
     if request.method != "POST":
         return HttpResponse("Error: the request is not an HTTP POST request\n", status=500) 
     logging.info('Trying to get course ')
-    course_get = request.GET.get('courseid')
+    course_get = request.POST.get('courseid')
     courseid = Courses.objects.get(courseid=course_get)
     
     studentid_get = request.user.id
