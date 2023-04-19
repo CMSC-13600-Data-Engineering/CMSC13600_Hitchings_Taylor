@@ -150,7 +150,7 @@ def upload_qr_code(request):
         if Enrollment.objects.filter(studentid=studentid, courseid=courseid).count() == 0:
             return HttpResponse("Error: You are not enrolled in this course.")
 
-        upload_qr=request.FILES["file"]
+        upload_qr=request.FILES["upload_qr"]
         enrollmentid=Enrollment.objects.values_list('enrollmentid',flat=True).filter(studentid=studentid,courseid=courseid)[0]
         
         enrollment_get=request.POST.get('enrollmentid')
