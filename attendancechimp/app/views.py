@@ -135,7 +135,8 @@ def upload_qr_code(request):
         return HttpResponse("Error: You are not logged in as a student.")
     course_get = request.GET.get('courseid')
     courseid = Courses.objects.get(courseid=course_get)
-    
+    course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)[0]
+    enrollmentid=Enrollment.objects.values_list('enrollmentid',flat=True).filter(studentid=studentid,courseid=courseid)[0]
     
     if request.method == "POST": 
     
@@ -150,10 +151,10 @@ def upload_qr_code(request):
             return HttpResponse("Error: You are not enrolled in this course.")
     
     
-        id1=Enrollment.objects.values_list('enrollmentid',flat=True).filter(studentid=studentid,courseid=courseid)[0]
+        
         upload_qr=request.FILES
     
-        newqrcode=Uploaded_QRCodes(enrollmentid=id1,upload_qr=upload_qr)
+        newqrcode=Uploaded_QRCodes(enrollmentid=enrollmentid,upload_qr=upload_qr)
         newqrcode.save()
     
     
@@ -161,7 +162,7 @@ def upload_qr_code(request):
         return redirect(reverse('upload_success'))
     else:
         
-        return render(request, 'upload_qr_code.html')
+        return render(request, 'upload_qr_code.html',{'courseid':courseid,'course_name':course_name,'enrollmentid':enrollmentid})
     
 def upload_success(request):
     # code to display the success page for uploaded qr code
