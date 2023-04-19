@@ -1,7 +1,7 @@
 <p>Course Name: {{course_name}}<p>
 <p>Course ID: {{courseid}}<p>
 <p>Enrollment ID: {{enrollmentid}}<p>
-<form method="post" action="{% url 'upload_qr_code' %}">
+<form method="post" action="{% url 'upload_qr_code' %}" enctype="multipart/form-data">
   {% csrf_token %}
   
   <input type="file" id="upload_qr" name="upload_qr">
