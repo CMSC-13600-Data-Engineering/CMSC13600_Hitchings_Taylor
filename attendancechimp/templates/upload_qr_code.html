@@ -1,6 +1,6 @@
-<h1>{{ course.course_name }}</h1>
-<p>{{ course.courseid }}</p>
-<p>{{Enrollment.enrollmentid}}</p>
+<p>Course Name: {{course_name}}<p>
+<p>Course ID: {{courseid}}<p>
+<p>Enrollment ID: {{Enrollment.enrollmentid}}<p>
 <form method="post" action="{% url 'upload_qr_code' %}">
   {% csrf_token %}
   
