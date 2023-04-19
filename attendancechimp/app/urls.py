@@ -11,6 +11,6 @@ urlpatterns = [
     path('join/', views.joincourse, name='joincourse'),
    # path('attendance/', views.attendance, name='attendance'),
     #path('upload/', views.upload_qr_code, name='upload_qr_code'),
-    path('upload_qr_code/<int:courseid>/', views.upload_qr_code, name='upload_qr_code')
+    path('upload_qr_code/<int:courseid>/', views.upload_qr_code, name='upload_qr_code'),
     path('upload/upload_success',views.upload_success, name='upload_success'),
 ]
