@@ -159,7 +159,7 @@ def upload_qr_code(request):
         
         return render(request, 'upload_qr_code.html')
     
-    def upload_success(request):
+def upload_success(request):
     # code to display the success page for uploaded qr code
     
-        return render(request, 'upload_success.html')
+    return render(request, 'upload_success.html')
