@@ -109,7 +109,7 @@ def joincourse(request):
     else:
         courseid = request.GET.get('courseid')
         course_name=request.GET.get('course_name')
-        return render(request, 'joincourse.html', {'courseid':courseid,'':course_name})
+        return render(request, 'joincourse.html', {'courseid':courseid,'course_name':course_name})
 
     
 
@@ -151,5 +151,5 @@ def upload_qr_code(request):
     
         return HttpResponse("Success! Image Uploaded")
     else:
-        return render(request)
-    #return render(request, 'upload_qr_code.html', {'course_id': course_id})
+        
+        return render(request, 'upload_qr_code.html')
