@@ -133,7 +133,8 @@ def upload_qr_code(request):
     # code to handle the student uploading the QR code image
     if request.user.profile.user_type != '0':
         return HttpResponse("Error: You are not logged in as a student.")
-    courseid = get_object_or_404(Course, pk=courseid)
+    course_get = request.GET.get('courseid')
+    courseid = Courses.objects.get(courseid=course_get).courseid
     if request.method == "POST": 
     
         
