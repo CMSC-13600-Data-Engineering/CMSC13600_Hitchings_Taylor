@@ -102,7 +102,7 @@ def joincourse(request):
                 return render(request, 'joincourse.html', {'courseid':courseid,'course_name':course_name,'error':'You are already enrolled in a course that meets at this time'})
 
         # Enroll student in course
-        enrollment = Enrollment(courseid=int(courseid), studentid=int(studentid))
+        enrollment = Enrollment(courseid=int(courseid), studentid=studentid)
         enrollment.save()
         return HttpResponse('You have successfully enrolled!')
 
