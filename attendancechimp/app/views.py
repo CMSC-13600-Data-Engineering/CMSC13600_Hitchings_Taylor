@@ -81,7 +81,7 @@ def joincourse(request):
 
     course_get = request.GET.get('courseid')
     courseid = Courses.objects.get(courseid=course_get)
- 
+    course_name=request.GET.get('course_name')
 
     if request.method == 'POST':
         studentid_get = request.user.id
@@ -99,7 +99,7 @@ def joincourse(request):
         for enrollment in current_courses:
             if enrollment.courseid.classtime == Courses.objects.get(courseid=courseidy).classtime:
                 messages.error(request, 'You are already enrolled in a course that meets at this time.')
-                return render(request, 'joincourse.html', {'courseid':courseidy,'error':'You are alreadyt enrolled in a course that meets at this time'})
+                return render(request, 'joincourse.html', {'courseid':courseidy,'course_name':course_name,'error':'You are alreadyt enrolled in a course that meets at this time'})
 
         # Enroll student in course
         enrollment = Enrollment(courseid=courseid, studentid=studentid)
@@ -108,7 +108,8 @@ def joincourse(request):
 
     else:
         courseid = request.GET.get('courseid')
-        return render(request, 'joincourse.html', {'courseid':courseid})
+        course_name=request.GET.get('course_name')
+        return render(request, 'joincourse.html', {'courseid':courseid,'':course_name})
 
     
 
@@ -149,4 +150,6 @@ def upload_qr_code(request):
     
     
         return HttpResponse("Success! Image Uploaded")
+    else:
+        
     #return render(request, 'upload_qr_code.html', {'course_id': course_id})
