@@ -61,7 +61,7 @@ class Uploaded_QRCodes(models.Model):
     uploadid=models.AutoField(primary_key=True)
     enrollmentid=models.ForeignKey(Enrollment,on_delete=models.CASCADE)
     #classmeeting=models.ForeignKey(Instructor_QRCodes,on_delete=models.CASCADE)
-    upload_qr=models.ImageField(upload_to='uploaded_qr_codes')
+    upload_qr=models.ImageField()
     upload_time=models.DateTimeField(auto_now_add=True)
 
 @receiver(post_save, sender=User)
