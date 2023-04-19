@@ -152,7 +152,9 @@ def upload_qr_code(request):
 
         upload_qr=request.FILES
         enrollmentid=Enrollment.objects.values_list('enrollmentid',flat=True).filter(studentid=studentid,courseid=courseid)[0]
-        newqrcode=Uploaded_QRCodes(enrollmentid=enrollmentid,upload_qr=upload_qr)
+        
+        enrollment_get=request.POST.get('enrollmentid')
+        newqrcode=Uploaded_QRCodes(enrollmentid=enrollment.objects.get(enrollmentid=enrollment_get),upload_qr=upload_qr)
         newqrcode.save()
     
     
