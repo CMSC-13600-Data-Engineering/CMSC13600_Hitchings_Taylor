@@ -80,8 +80,8 @@ def joincourse(request):
         return HttpResponse("Error: You are not logged in as a student.")
 
     course_get = request.GET.get('courseid')
-    courseid = Courses.objects.get(courseid=course_get)
-    course_name=request.GET.get('course_name')
+    courseid = Courses.objects.get(courseid=course_get).courseid
+    course_name=Courses.objects.filter(courseid=courseid).course_name
 
     if request.method == 'POST':
         studentid_get = request.user.id
@@ -94,12 +94,12 @@ def joincourse(request):
             return render(request, 'joincourse.html', {'error': 'You are already enrolled in this course.'})
         # Check if student is enrolled in any other courses with the same classtime
         current_courses = Enrollment.objects.filter(studentid=studentid)
-        #courseidy=getattr(courseid)
-        courseidy=courseid.courseid
+        
+        #courseidy=courseid.courseid
         for enrollment in current_courses:
-            if enrollment.courseid.classtime == Courses.objects.get(courseid=courseidy).classtime:
+            if enrollment.courseid.classtime == Courses.objects.get(courseid=courseid).classtime:
                 messages.error(request, 'You are already enrolled in a course that meets at this time.')
-                return render(request, 'joincourse.html', {'courseid':courseidy,'course_name':course_name,'error':'You are alreadyt enrolled in a course that meets at this time'})
+                return render(request, 'joincourse.html', {'courseid':courseid,'course_name':course_name,'error':'You are alreadyt enrolled in a course that meets at this time'})
 
         # Enroll student in course
         enrollment = Enrollment(courseid=courseid, studentid=studentid)
@@ -107,8 +107,8 @@ def joincourse(request):
         return HttpResponse('You have successfully enrolled!')
 
     else:
-        courseid = request.GET.get('courseid')
-        course_name=request.GET.get('course_name').course_name
+        #courseid = request.GET.get('courseid')
+        #course_name=request.GET.get('course_name').course_name
         return render(request, 'joincourse.html', {'courseid':courseid,'course_name':course_name})
 
     
