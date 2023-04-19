@@ -3,6 +3,8 @@
 {% block content %}
 <h1>{{ course.course_name }}<h1>
 <p>{{ course.courseid }}<p>
+<p>{{course_name}}<p>
+<p>{{courseid}}<p>
 <form method="post">
     {% csrf_token %}
     <button type="submit">Join</button>
