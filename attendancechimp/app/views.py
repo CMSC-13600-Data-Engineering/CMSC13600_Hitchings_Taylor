@@ -108,7 +108,7 @@ def joincourse(request):
 
     else:
         courseid = request.GET.get('courseid')
-        course_name=request.GET.get('course_name')
+        course_name=request.GET.get('course_name').course_name
         return render(request, 'joincourse.html', {'courseid':courseid,'course_name':course_name})
 
     
