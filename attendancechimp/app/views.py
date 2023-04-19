@@ -151,5 +151,5 @@ def upload_qr_code(request):
     
         return HttpResponse("Success! Image Uploaded")
     else:
-        
+        return render(request)
     #return render(request, 'upload_qr_code.html', {'course_id': course_id})
