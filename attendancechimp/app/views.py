@@ -78,15 +78,12 @@ def joincourse(request):
     # check if user prifile is student
     if request.user.profile.user_type != '0':
         return HttpResponse("Error: You are not logged in as a student.")
-    if request.method == 'GET':
-        course_get = request.GET.get('courseid')
-        courseid = Courses.objects.get(courseid=course_get).courseid
-        course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)[0]
-        return render(request, 'joincourse.html', {'courseid':courseid,'course_name':course_name})
+    course_get = request.GET.get('courseid')
+    courseid = Courses.objects.get(courseid=course_get).courseid
+    course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)[0]
+        
     if request.method == 'POST':
-        course_get = request.POST.get('courseid')
-        courseid = Courses.objects.get(courseid=course_get).courseid
-        course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)[0]
+        
         
         studentid_get = request.user.id
         studentid = User_Profiles.objects.get(user_id=studentid_get)
@@ -111,7 +108,7 @@ def joincourse(request):
         enrollment.save()
         return HttpResponse('You have successfully enrolled!')
 
-    
+    return render(request, 'joincourse.html', {'courseid':courseid,'course_name':course_name})
 
     
 
@@ -135,15 +132,19 @@ def upload_qr_code(request):
     # code to handle the student uploading the QR code image
     if request.user.profile.user_type != '0':
         return HttpResponse("Error: You are not logged in as a student.")
-    course_get = request.GET.get('courseid')
-    courseid = Courses.objects.get(courseid=course_get).courseid
-    course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)[0]
-    studentid_get = request.user.id
-    studentid = User_Profiles.objects.get(user_id=studentid_get)
-    enrollmentid=Enrollment.objects.values_list('enrollmentid',flat=True).filter(studentid=studentid,courseid=courseid)[0]
     
+    if request.method == "GET":
+        course_get = request.GET.get('courseid')
+        courseid = Courses.objects.get(courseid=course_get).courseid
+        course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)[0]
+        studentid_get = request.user.id
+        studentid = User_Profiles.objects.get(user_id=studentid_get)
+        enrollmentid=Enrollment.objects.values_list('enrollmentid',flat=True).filter(studentid=studentid,courseid=courseid)[0]
+        return render(request, 'upload_qr_code.html',{'courseid':courseid,'course_name':course_name,'enrollmentid':enrollmentid})
     if request.method == "POST": 
-
+        course_get = request.POST.get('courseid')
+        courseid = Courses.objects.get(courseid=course_get).courseid
+        course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)[0]
         if Enrollment.objects.filter(studentid=studentid, courseid=courseid).count() == 0:
             return HttpResponse("Error: You are not enrolled in this course.")
 
@@ -155,9 +156,9 @@ def upload_qr_code(request):
     
         #return HttpResponse("Success! Image Uploaded")
         return redirect(reverse('upload_success'))
-    else:
+    #else:
         
-        return render(request, 'upload_qr_code.html',{'courseid':courseid,'course_name':course_name,'enrollmentid':enrollmentid})
+        
     
 def upload_success(request):
     # code to display the success page for uploaded qr code
