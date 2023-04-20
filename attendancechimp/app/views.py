@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 import random
 import string
 from django.utils import timezone
+from django.db import IntegrityError
 
 
 def index(request):
@@ -169,37 +170,71 @@ def upload_success(request):
     # code to display the success page for uploaded qr code    
     return render(request, 'upload_success.html')
 
+
+#Code to handle the instructor creating the QR code image
 @login_required(login_url='/login/')
 def attendance_qr(request):
-    '''code to handle the instructor creating the QR code image'''
-
     # check if user is instructor
     if request.user.profile.user_type != '1':
         return HttpResponse("Error: You are not logged in as an instructor.")
 
-    course_id = request.GET.get('course_id')
-    try:
-        # Get the course based on the course_id
+    if request.method == "GET":
         course_get = request.GET.get('courseid')
-        coursename_get = Courses.objects.get(courseid=course_get).course_name # get name
-        courseid_get = Courses.objects.get(courseid=course_get).instructorid_id # get name
-        user_id_get = request.user.profile.user_id
+        courseid = Courses.objects.get(courseid=course_get)
+        coursename = Courses.objects.get(courseid=course_get).course_name
+        instructor_id = Courses.objects.get(courseid=course_get).instructorid_id
+        user_id = request.user.profile.user_id
 
         # check if logged-in instructor is the instructor of the class
-        if courseid_get != user_id_get:
+        if instructor_id != user_id:
             return HttpResponse("Error: You are not the instructor of this class.")
         else:
-            print('yahoo!')
-       
-    except:
-        print('fail')
+            class_name = coursename
+            # Generate class_code and class_code_time only if not already stored in session
+            if 'class_code' not in request.session or 'class_code_time' not in request.session:
+                class_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+                class_code_time = timezone.now().strftime("%Y-%m-%d %H:%M:%S") # Convert datetime object to string
+                request.session['class_code'] = class_code
+                request.session['class_code_time'] = class_code_time
+            else:
+                class_code = request.session['class_code']
+                class_code_time = request.session['class_code_time']
 
-    # create random string with length 10
-    class_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
-    class_code_time = timezone.now()
-    class_name = coursename_get
+            context = {'courseid':courseid, 'class_code': class_code, 'class_code_time': class_code_time, 'class_name': class_name}
+            print('GET SUCCEED!')
+            return render(request, 'attendance_qr.html', context)
+
+    if request.method == "POST":
+        course_get = request.GET.get('courseid')
+        courseid = Courses.objects.get(courseid=course_get)
+        coursename = Courses.objects.get(courseid=course_get).course_name
+
+        class_name = coursename
+        # Retrieve class_code and class_code_time from session
+        class_code = request.session.get('class_code', None)
+        class_code_time = request.session.get('class_code_time', None)
+        if not class_code or not class_code_time:
+            return HttpResponse("Error: QR could not render.")
+        
+        # Create a new object in the Instructor_QRCodes model
+        instructor_qrcode = Instructor_QRCodes(courseid=courseid,
+                                                class_code=class_code,
+                                                class_code_time=class_code_time)
+        try:  
+            # Save the object to the database
+            instructor_qrcode.save()
+            success_message = 'Class QR code initiated successfully!'
+        except IntegrityError:
+            # Handle IntegrityError if the class_code already exists in the database
+            success_message = "You have already initiated the QR for this class session."
     
+        
+        # Render the template with the generated class code
+        context = {'courseid':courseid, 'class_code': class_code, 'class_code_time': class_code_time, 'class_name': class_name, 'success_message': success_message}
+        return render(request, 'attendance_qr.html', context)
     
-    # Render the template with the generated class code
-    context = {'class_code': class_code, 'class_code_time': class_code_time, 'class_name': class_name}
-    return render(request, 'attendance_qr.html', context)
+    return HttpResponse("Error: QR could not render.")
+
+    
+
+

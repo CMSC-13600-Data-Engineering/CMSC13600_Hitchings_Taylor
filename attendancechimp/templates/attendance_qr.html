@@ -16,3 +16,18 @@
         correctLevel: QRCode.CorrectLevel.H
     });
 </script>
+
+<p> </p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Initiate</button>
+    <input type="hidden" name="courseid" value="{{ courseid }}">
+    <input type="hidden" name="class_code" value="{{ class_code }}">
+    <input type="hidden" name="class_code_time" value="{{ class_code_time }}">
+</form>
+
+<p>{{ success_message }}</p> 
+
+
+
