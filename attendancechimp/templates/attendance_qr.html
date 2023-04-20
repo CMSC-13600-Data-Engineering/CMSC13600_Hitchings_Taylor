@@ -1,0 +1,18 @@
+{% load static %}
+
+<script src="{% static 'js/qrcode.min.js' %}"></script>
+
+<h1>Course: {{ class_name}}</h1>
+<h2>Class Code: {{ class_code }}</h2>
+<div id="qrcode"></div>
+
+<script>
+    var qrcode = new QRCode("qrcode", {
+        text: "{{ class_code }}",
+        width: 256,
+        height: 256,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+</script>

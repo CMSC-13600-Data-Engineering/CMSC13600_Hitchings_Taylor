@@ -8,11 +8,14 @@ from django.shortcuts import render, redirect
 from app.forms import SignUpForm
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
+import random
+import string
+from django.utils import timezone
 
 
 def index(request):
     return render(request, 'app/index.html', {})
+
 
 def new(request):
     if request.method == 'POST':
@@ -33,11 +36,16 @@ def new(request):
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
+
+@login_required(login_url='/accounts/login/')
 def addCourseForm(request, error_msg=''):
     '''addCourseForm serves a web form that we can use to add a course to the database
     '''
-
+    # check if user prifile is student
+    if request.user.profile.user_type != '1':
+        return HttpResponse("Error: You are not logged in as an instructor.")    
     return render(request, 'addcourse.html', {'error': error_msg})
+
 
 def handlecourseForm(request):
     if request.method != "POST":
@@ -59,7 +67,6 @@ def handlecourseForm(request):
         addCourse(courseid, course_name, instructorid, recurrence, classtime, startdate, enddate)
     except Exception as e:
         return addCourseForm(request,error_msg="Error: There is a database error in creating this course: " + str(e) + '\n')
-
     return redirect(reverse('create_success', args=[courseid]))
 
 
@@ -112,18 +119,6 @@ def joincourse(request):
 
     
 
-
-'''
-@login_required(login_url='/accounts/login/')
-def attendance(request):
-    # code to display the QR code for attendance
-    # ...
-    course_id = request.GET.get('course_id')
-    return render(request, 'attendance.html', {'course_id': course_id})
-'''
-
-
-
 from django.core.files.storage import FileSystemStorage
 
 
@@ -171,6 +166,40 @@ def upload_qr_code(request):
         
     
 def upload_success(request):
-    # code to display the success page for uploaded qr code
-    
+    # code to display the success page for uploaded qr code    
     return render(request, 'upload_success.html')
+
+@login_required(login_url='/login/')
+def attendance_qr(request):
+    '''code to handle the instructor creating the QR code image'''
+
+    # check if user is instructor
+    if request.user.profile.user_type != '1':
+        return HttpResponse("Error: You are not logged in as an instructor.")
+
+    course_id = request.GET.get('course_id')
+    try:
+        # Get the course based on the course_id
+        course_get = request.GET.get('courseid')
+        coursename_get = Courses.objects.get(courseid=course_get).course_name # get name
+        courseid_get = Courses.objects.get(courseid=course_get).instructorid_id # get name
+        user_id_get = request.user.profile.user_id
+
+        # check if logged-in instructor is the instructor of the class
+        if courseid_get != user_id_get:
+            return HttpResponse("Error: You are not the instructor of this class.")
+        else:
+            print('yahoo!')
+       
+    except:
+        print('fail')
+
+    # create random string with length 10
+    class_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+    class_code_time = timezone.now()
+    class_name = coursename_get
+    
+    
+    # Render the template with the generated class code
+    context = {'class_code': class_code, 'class_code_time': class_code_time, 'class_name': class_name}
+    return render(request, 'attendance_qr.html', context)

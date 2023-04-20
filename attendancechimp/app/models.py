@@ -38,7 +38,7 @@ class Courses(models.Model):
     
 #Track what students are enrolled in what classes
 #This does allow a 'double enrollment' into a class
-#So code actuall populating the table needs to prevent that
+#So code actual populating the table needs to prevent that
 class Enrollment(models.Model):
     enrollmentid=models.AutoField(primary_key=True)
     courseid=models.ForeignKey(Courses, on_delete=models.CASCADE)
@@ -47,9 +47,9 @@ class Enrollment(models.Model):
 class Instructor_QRCodes(models.Model):
     qrid=models.AutoField(primary_key=True)
     courseid=models.ForeignKey(Courses,on_delete=models.CASCADE)
-    classmeeting=models.IntegerField()
-    qrcode=models.ImageField(upload_to='course_qr_codes')
-    creation_time=models.DateTimeField()
+    #classmeeting=models.IntegerField()
+    class_code = models.CharField(max_length=10, unique=True, null=True, blank=True)
+    class_code_time = models.DateTimeField(null=True, blank=True)
     
 class Attendance(models.Model):
     attendanceid=models.AutoField(primary_key=True)
