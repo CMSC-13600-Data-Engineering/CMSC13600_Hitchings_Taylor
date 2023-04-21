@@ -4,7 +4,7 @@
 <form method="post" action="{% url 'upload_qr_code' %}" enctype="multipart/form-data">
   {% csrf_token %}
   
-  <input type="file" id="upload_qr" name="upload_qr">
+  <input type="file" id="upload_qr" name="upload_qr" accept="image/*">
   <button type="submit">Upload</button>
   <input type="hidden" name="courseid" value="{{courseid }}">
   <input type="hidden" name="enrollmentid" value="{{enrollmentid }}">
