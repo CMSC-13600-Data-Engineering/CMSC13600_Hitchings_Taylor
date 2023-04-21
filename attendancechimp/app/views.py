@@ -63,7 +63,7 @@ def handlecourseForm(request):
         enddate=request.POST['enddate']
     except:
         return addCourseForm(request, error_msg='Please fill out all the fields of the form')
-    instructorid=request.POST.get('instructorid')
+    instructorid=request.user.id
     try:
         addCourse(courseid, course_name, instructorid, recurrence, classtime, startdate, enddate)
     except Exception as e:
