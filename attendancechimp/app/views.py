@@ -42,7 +42,7 @@ def new(request):
 def addCourseForm(request, error_msg=''):
     '''addCourseForm serves a web form that we can use to add a course to the database
     '''
-    # check if user prifile is student
+    # check if user profile is student
     if request.user.profile.user_type != '1':
         return HttpResponse("Error: You are not logged in as an instructor.")    
     return render(request, 'addcourse.html', {'error': error_msg})
@@ -63,7 +63,7 @@ def handlecourseForm(request):
         enddate=request.POST['enddate']
     except:
         return addCourseForm(request, error_msg='Please fill out all the fields of the form')
-
+    instructorid=request.POST.get('instructorid')
     try:
         addCourse(courseid, course_name, instructorid, recurrence, classtime, startdate, enddate)
     except Exception as e:
