@@ -190,6 +190,7 @@ def attendance_qr(request):
             return HttpResponse("Error: You are not the instructor of this class.")
         else:
             class_name = coursename
+            
             # Generate class_code and class_code_time only if not already stored in session
             if 'class_code' not in request.session or 'class_code_time' not in request.session:
                 class_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
@@ -216,8 +217,16 @@ def attendance_qr(request):
         if not class_code or not class_code_time:
             return HttpResponse("Error: QR could not render.")
         
+        # Get the last classmeeting value for the given courseid
+        last_classmeeting = Instructor_QRCodes.objects.filter(courseid=courseid).order_by('-classmeeting').first()
+        if last_classmeeting:
+            classmeeting = last_classmeeting.classmeeting + 1
+        else:
+            classmeeting = 1
+        
         # Create a new object in the Instructor_QRCodes model
         instructor_qrcode = Instructor_QRCodes(courseid=courseid,
+                                               classmeeting=classmeeting,
                                                 class_code=class_code,
                                                 class_code_time=class_code_time)
         try:  
@@ -231,6 +240,8 @@ def attendance_qr(request):
         
         # Render the template with the generated class code
         context = {'courseid':courseid, 'class_code': class_code, 'class_code_time': class_code_time, 'class_name': class_name, 'success_message': success_message}
+        del request.session['class_code']
+        del request.session['class_code_time']
         return render(request, 'attendance_qr.html', context)
     
     return HttpResponse("Error: QR could not render.")

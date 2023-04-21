@@ -47,7 +47,7 @@ class Enrollment(models.Model):
 class Instructor_QRCodes(models.Model):
     qrid=models.AutoField(primary_key=True)
     courseid=models.ForeignKey(Courses,on_delete=models.CASCADE)
-    #classmeeting=models.IntegerField()
+    classmeeting=models.IntegerField(null=True, blank=True)
     class_code = models.CharField(max_length=10, unique=True, null=True, blank=True)
     class_code_time = models.DateTimeField(null=True, blank=True)
     
