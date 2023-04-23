@@ -83,7 +83,7 @@ def create_success(request, courseid):
 def joincourse(request):
     # code to handle the student joining the course
 
-    # check if user prifile is student
+    # check if user profile is student
     if request.user.profile.user_type != '0':
         return HttpResponse("Error: You are not logged in as a student.")
     course_get = request.GET.get('courseid')
@@ -101,17 +101,18 @@ def joincourse(request):
         # Check if student is already enrolled in this course
         if current_enrollment > 0:
             return render(request, 'joincourse.html', {'error': 'You are already enrolled in this course.'})
+
         # Check if student is enrolled in any other courses with the same classtime
         current_courses = Enrollment.objects.filter(studentid=studentid)
-        
-        #courseidy=courseid.courseid
-        for enrollment in Enrollment.objects.filter(studentid=studentid, courseid=courseid):
-            if enrollment.courseid.classtime == Courses.objects.get(courseid=courseid).classtime:
-                #messages.error(request, 'You are already enrolled in a course that meets at this time.')
-                return render(request, 'joincourse.html', {'courseid':courseid,'course_name':course_name,'error':'You are already enrolled in a course that meets at this time'})
+
+        for enrolled_course in current_courses:
+            enrolled_course_courseid = enrolled_course.courseid.courseid
+            if Courses.objects.get(courseid=enrolled_course_courseid).classtime == Courses.objects.get(courseid=courseid).classtime:
+                if Courses.objects.get(courseid=enrolled_course_courseid).recurrence == Courses.objects.get(courseid=courseid).recurrence:
+                    return render(request, 'joincourse.html', {'courseid':courseid,'course_name':course_name,'error':'You are already enrolled in a course that meets at this time.'})
+       
 
         # Enroll student in course
-        
         enrollment = Enrollment(courseid=Courses.objects.get(courseid=course_get), studentid=studentid)
         enrollment.save()
         return HttpResponse('You have successfully enrolled!')
