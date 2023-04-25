@@ -54,7 +54,7 @@ class Instructor_QRCodes(models.Model):
 class Attendance(models.Model):
     attendanceid=models.AutoField(primary_key=True)
     enrollmentid=models.ForeignKey(Enrollment,on_delete=models.CASCADE)
-    classmeeting=models.ForeignKey(Instructor_QRCodes, on_delete=models.CASCADE)
+    classmeeting=models.IntegerField(null=True, blank=True)
     attended=models.BooleanField(default=False)
     
 class Uploaded_QRCodes(models.Model):

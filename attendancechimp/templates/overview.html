@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p>Course Name: {{course_name}}</p>
+<p>Course ID: {{courseid}}</p>
+<p>Students Enrolled: {{student_count}}</p>
+
+  <h1>Attendance by Class Meeting</h1>
+  <table id="classMeetingTable">
+     <th style="padding-right: 10px;">Class Meeting</th>
+      <th>Attendance Records</th>
+    </tr>
+    {% for classmeeting in classmeetings %}
+    <tr>
+      <td>{{ classmeeting.classmeeting }}</td>
+      <td>{{ classmeeting.attendance_count }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="2">No class meetings found.</td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
+

@@ -123,8 +123,7 @@ def joincourse(request):
 
 from django.core.files.storage import FileSystemStorage
 
-
-@login_required(login_url='/login/')
+@login_required(login_url='/accounts/login/')
 def upload_qr_code(request):
     # code to handle the student uploading the QR code image
     if request.user.profile.user_type != '0':
@@ -159,11 +158,24 @@ def upload_qr_code(request):
         enrollment_get=request.POST.get('enrollmentid')
         newqrcode=Uploaded_QRCodes(enrollmentid=Enrollment.objects.get(enrollmentid=enrollment_get),upload_qr=upload_qr)
         newqrcode.save()
-    
+
+
+        
+        # create new attendance object - for now set attended=1 if any image uploaded
+
+        # Retrieve the most recent Instructor_QRCodes object for a given courseid   
+        if Instructor_QRCodes.objects.filter(courseid_id=courseid).count() >= 1:
+            latest_instructor_qrcode = Instructor_QRCodes.objects.filter(courseid_id=courseid).latest('class_code_time')
+            latest_classmeeting = latest_instructor_qrcode.classmeeting
+            
+            new_attendance = Attendance(enrollmentid=Enrollment.objects.get(enrollmentid=enrollment_get), classmeeting=latest_classmeeting, attended=True)
+            new_attendance.save()
+        else:
+            return HttpResponse('Your instructor has not initiated any QR codes.')
+                                    
     
         #return HttpResponse("Success! Image Uploaded")
         return redirect(reverse('upload_success'))
-    #else:
         
         
     
@@ -173,7 +185,7 @@ def upload_success(request):
 
 
 #Code to handle the instructor creating the QR code image
-@login_required(login_url='/login/')
+@login_required(login_url='/accounts/login/')
 def attendance_qr(request):
     # check if user is instructor
     if request.user.profile.user_type != '1':
@@ -247,6 +259,48 @@ def attendance_qr(request):
     
     return HttpResponse("Error: QR could not render.")
 
+
+from .models import Courses, Enrollment, Attendance, Instructor_QRCodes
+from django.db.models import Count
+
+@login_required(login_url='/accounts/login/')
+def overview(request):
+    # check if user is instructor
+    if request.user.profile.user_type != '1':
+        return HttpResponse("Error: You are not logged in as an instructor.")
+
+    course_get = request.GET.get('courseid')
+    courseid = Courses.objects.get(courseid=course_get).courseid
+    course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)[0]
+    # number of students in course
+    enrollments = Enrollment.objects.filter(courseid=courseid)
+    student_count = enrollments.count()
     
+    enrollment_ids = enrollments.values_list('enrollmentid', flat=True)
+    
+    # Use queryset filtering with "in" lookup to get all Attendance objects with enrollmentid in the given enrollment_ids list
+    attendances = Attendance.objects.filter(enrollmentid__in=enrollment_ids)
+
+    # get all enrollment ids for course
+    print('Enrollment IDS:',enrollment_ids)
+    
+
+    classmeetings = []
+    class_instances = Instructor_QRCodes.objects.filter(courseid=courseid).values_list('classmeeting', flat=True)
+    for class_instance in class_instances:
+        attendance_count = attendances.filter(classmeeting=class_instance).count()
+        classmeetings_item = {'classmeeting': class_instance, 'attendance_count': attendance_count}
+        classmeetings.append(classmeetings_item)
+
+    
+    context = {'courseid':courseid, 'course_name':course_name, 'student_count':student_count, 'classmeetings':classmeetings}
+
+    return render(request, 'overview.html', context)
+
+
+
+
+
+
 
 
