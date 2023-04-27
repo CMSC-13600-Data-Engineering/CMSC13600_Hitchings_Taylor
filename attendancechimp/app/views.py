@@ -331,7 +331,7 @@ def student(request):
                 to_display_item[stry]=1
             else:
                 to_display_item[stry]=0
-        to_dsiplay.append(to_display_item)
+        to_display.append(to_display_item)
     context = {'courseid':courseid, 'course_name':course_name, 'to_display':to_display}
     return render(request, 'student.html', context)
 
