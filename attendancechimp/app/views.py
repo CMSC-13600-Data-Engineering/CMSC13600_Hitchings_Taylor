@@ -12,7 +12,7 @@ import random
 import string
 from django.utils import timezone
 from django.db import IntegrityError
-import numpy as np
+
 
 def index(request):
     return render(request, 'app/index.html', {})
