@@ -14,4 +14,5 @@ urlpatterns = [
     path('upload/upload_success',views.upload_success, name='upload_success'),
     # data analytics
     path('overview/', views.overview, name='overview'),
+    path('student/',views.student, name='student'),
 ]
