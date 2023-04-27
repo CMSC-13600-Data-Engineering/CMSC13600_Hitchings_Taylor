@@ -26,7 +26,7 @@
         <td>{{ student.first_name }}</td>
         <td>{{ student.last_name }}</td>
         {% for i in class_instances %}
-        <td>{{ student.get("classmeeting"{})}}</td>
+        <td>{{ student.classmeeting{}}}</td>
         {% endfor %}
       </tr>
       {% endfor %}
