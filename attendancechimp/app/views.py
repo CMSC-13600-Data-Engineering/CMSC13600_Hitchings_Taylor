@@ -12,7 +12,7 @@ import random
 import string
 from django.utils import timezone
 from django.db import IntegrityError
-
+import numpy as np
 
 def index(request):
     return render(request, 'app/index.html', {})
@@ -297,8 +297,46 @@ def overview(request):
 
     return render(request, 'overview.html', context)
 
+@login_required(login_url='/accounts/login/')
+def student(request):
+    # check if user is instructor
+    if request.method != "GET":
+        return HttpResponse("Error: the request is not an HTTP GET request\n", status=500)
+    
+    if request.user.profile.user_type != '1':
+        return HttpResponse("Error: You are not logged in as an instructor.")
 
+    course_get = request.GET.get('courseid')
+    courseid = Courses.objects.get(courseid=course_get).courseid
+    course_name=Courses.objects.filter(courseid=courseid).values_list('course_name',flat = True)[0]
+    
+    #get all the students in the class
+    enrollments=Enrollment.objects.filter(courseid=courseid)
+    studentids=enrollments.values_list('studentid',flat=True)
+    
+    to_display=[]
+    for i in studentids:
+        first_name=User_Profiles.objects.filter(user=i).values_list('first_name',flat=True)[0]
+        last_name=User_Profiles.objects.filter(user=i).values_list('last_name',flat=True)[0]
+        class_instances = Instructor_QRCodes.objects.filter(courseid=courseid).values_list('classmeeting', flat=True)
+        enrollment_id=Enrollment.objects.filter(courseid=courseid,studentid=i).values_list('enrollmentid',flat=True)[0]
+        to_display_item={}
+        to_display_item['studentid']=i
+        to_display_item['first_name']=first_name
+        to_display_item['last_name']=last_name
+        for j in range(len(class_instances)):
+            stry=str('classmeeting')+str(j+1)
+            meeting=class_instances[j]
+            if Attendance.objects.filter(enrollmentid=enrollment_id,classmeeting=meeting)> 0:
+                to_display_item[stry]=1
+            else:
+                to_display_item[stry]=0
+        to_dsiplay.append(to_display_item)
+    context = {'courseid':courseid, 'course_name':course_name, 'to_display':to_display}
+    return render(request, 'student.html', context)
 
+        
+        
 
 
 
