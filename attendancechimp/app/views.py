@@ -327,7 +327,7 @@ def student(request):
         for j in range(len(class_instances)):
             stry=str('classmeeting')+str(j+1)
             meeting=class_instances[j]
-            if Attendance.objects.filter(enrollmentid=enrollment_id,classmeeting=meeting)> 0:
+            if Attendance.objects.filter(enrollmentid=enrollment_id,classmeeting=meeting).count()> 0:
                 to_display_item[stry]=1
             else:
                 to_display_item[stry]=0
