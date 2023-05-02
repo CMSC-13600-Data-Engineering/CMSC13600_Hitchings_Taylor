@@ -330,7 +330,7 @@ def student(request):
             meeting=class_instances[j]
             if Attendance.objects.filter(enrollmentid=enrollment_id,classmeeting=meeting).count()> 0:
                 #to_display_item[stry]=1
-                classes_attended.append(str(i+1))
+                classes_attended.append(j+1)
         to_display_item['classes_attended']=classes_attended
         to_display.append(to_display_item)
     context = {'courseid':courseid, 'course_name':course_name, 'to_display':to_display}
